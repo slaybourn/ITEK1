@@ -14,10 +14,11 @@ echo "Working on the Wifi setup....."
 # The  <<EOM > send all text untill the "EOM" part to the file
 # Known as a "here document" for one > all is replaced in the file
 # to append, use >>$FILE
+# Followed by the the code we actually want to replace everything in the file with
 
 /bin/cat <<EOM >$FILE
 
-#Here is the code we actually want to replace everything in the file with
+
 
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -35,6 +36,8 @@ EOM
 # friendly message
 
 echo "done"
+
+read -p "Enter your designated end IP 10.110.0.:"  IP
 
 echo "Working on the static ip-address...."
 
@@ -109,12 +112,12 @@ slaac private
 #fallback static_eth0
 
 interface wlan0
-static ip_address=10.110.0.223/24
+static ip_address=10.110.0.$IP/24
 static routers=10.110.0.1
 static domain_name_servers=1.1.1.1
 
 interface eth0
-static ip_address=10.110.0.223/24
+static ip_address=10.110.0.$IP/24
 static routers=10.110.0.1
 static domain_name_servers=1.1.1.1
 
