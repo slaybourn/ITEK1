@@ -36,7 +36,7 @@ echo "Done"
 echo "Starting Crontab job generation"
 
 #Ask how often (in minutes) the job should run
-read -p "How many minutes to wait between each test. Recommend  5 min, but 1 min is possible: "  waitTime
+read -p "How many minutes to wait between each test. Recommend  5 min, but 1 min is possible "  waitTime
 
 echo "Generating crontab job"
 
