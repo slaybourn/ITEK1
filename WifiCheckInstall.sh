@@ -43,6 +43,6 @@ echo "Generating crontab job"
 
 #adding job to crontabs
 
-(crontab -l ; echo "/$waitTime * * * * /usr/bin/sudo -H /usr/local/bin/wifiCheck.sh >> /dev/null 2>&1")| crontab -
+(crontab -e ; echo "/$waitTime * * * * /usr/bin/sudo -H /usr/local/bin/wifiCheck.sh >> /dev/null 2>&1")| crontab -
 
 echo "Done"
