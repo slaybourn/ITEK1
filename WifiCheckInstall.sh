@@ -5,7 +5,7 @@
 FILE="/usr/local/bin/wifiCheck.sh"
 
 # Nice friendly user message... don't panic / 42
-echo "Working on the Wifi Check Installer.....
+echo "Working on the Wifi Check Installer....."
 
 # bin/cat is the command we use, EOM is the "End of message"
 # we use to tell when the command is done (can be anything) 
