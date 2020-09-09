@@ -41,8 +41,8 @@ read -p "How many minutes to wait between each test. Recommend  5 min, but 1 min
 echo "Generating crontab job"
 
 
-#adding job to crontabs
+#adding job to crontab of current user
 
-(crontab -l 2>/dev/null; echo "/$waitTime * * * * /usr/bin/sudo -H /usr/local/bin/wifiCheck.sh >> /dev/null 2>&1")| crontab -
+(crontab -u $USER -l 2>/dev/null; echo "/$waitTime * * * * /usr/bin/sudo -H /usr/local/bin/wifiCheck.sh >> /dev/null 2>&1")| crontab -
 
 echo "Done"
