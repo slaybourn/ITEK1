@@ -2,32 +2,40 @@
 # first line tells it it's a shell script
 
 # Sets the file to be altered
-FILE="/usr/local/bin/wifiCheck.sh"
+FILE="/home/pi/wifiCheck.sh"
 
 # Nice friendly user message... don't panic / 42
 echo "Working on the Wifi Check Installer....."
 
 # bin/cat is the command we use, EOM is the "End of message"
-# we use to tell when the command is done (can be anything) 
+# we use to tell when the command is done (can be anything)
 # $FILE calls the file we defined
 # The  <<EOM > send all text untill the "EOM" part to the file
 # Known as a "here document" for one > all is replaced in the file
 # to append, use >>$FILE
 # Followed by the the code we actually want to replace everything in the file with
 
+
 /bin/cat <<EOM >$FILE
 
-ping -c 4 1.1.1.1 > /dev/null
+#ping a server and if the result is not 0 (success) then restart wifi
 
-if [ $? != 0 ]
+
+if ping -c 2 1.1.1.1 &> /home/pi/wifiStatus.log
+
 then
-        echo "No network connection, restarting wlan0"
-        /sbin/ifconfig wlan0 down
+        echo "network fine, waiting for next run"
+else
+        echo "Network down, resetting wlan0"
+        ifconfig wlan0 down
         sleep 5
-        /sbin/ifconfig wlan0 up
+        ifconfig wlan0 up
 fi
 
 EOM
+
+#Make file executable
+sudo chmod +x $FILE
 
 # friendly message
 
@@ -36,13 +44,19 @@ echo "Done"
 echo "Starting Crontab job generation"
 
 #Ask how often (in minutes) the job should run
-read -p "How many minutes to wait between each test. Recommend  5 min, but 1 min is possible:" waitTime
+read -p "How many minutes to wait between each test. Recommended is every 5 min, but 1 to 59 min is possible: " waitTime
 
 echo "Generating crontab job"
 
 
 #adding job to crontab of current user
 
-(crontab -u $USER -l 2>/dev/null; echo "*/$waitTime * * * * /usr/bin/sudo bash /usr/local/bin/wifiCheck.sh >> /dev/null 2>&1")| crontab -
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "*/$waitTime * * * * /usr/bin/sudo bash /home/pi/wifiCheck.sh" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
 
 echo "Done"
